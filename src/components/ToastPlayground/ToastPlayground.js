@@ -3,12 +3,14 @@ import React from 'react';
 import Button from '../Button';
 
 import styles from './ToastPlayground.module.css';
+import Toast from "../Toast";
 
 const VARIANT_OPTIONS = ['notice', 'warning', 'success', 'error'];
 
 function ToastPlayground() {
   const [message, setMessage] = React.useState('');
   const [variant, setVariant] = React.useState(VARIANT_OPTIONS[0]);
+  const [toastOpen, setToastOpen] = React.useState(false);
 
   function handleVariantChange(event) {
     setVariant(event.target.value);
@@ -19,7 +21,11 @@ function ToastPlayground() {
   }
 
   function handlePopToast() {
-    window.alert(`You clicked the button! The message was: ${message}. The variant was: ${variant}`);
+    setToastOpen(true);
+  }
+
+  function handleDismissToast() {
+    setToastOpen(false);
   }
 
   return (
@@ -28,6 +34,8 @@ function ToastPlayground() {
         <img alt="Cute toast mascot" src="/toast.png" />
         <h1>Toast Playground</h1>
       </header>
+
+      <Toast open={toastOpen} variant={variant} onClose={handleDismissToast}>{message}</Toast>
 
       <div className={styles.controlsWrapper}>
         <div className={styles.row}>
