@@ -8,7 +8,6 @@ import {
 } from 'react-feather';
 
 import VisuallyHidden from '../VisuallyHidden';
-
 import styles from './Toast.module.css';
 
 const ICONS_BY_VARIANT = {
