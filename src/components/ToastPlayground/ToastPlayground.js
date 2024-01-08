@@ -4,13 +4,14 @@ import Button from '../Button';
 
 import styles from './ToastPlayground.module.css';
 import ToastShelf from "../ToastShelf";
+import {ToastContext} from "../ToastProvider";
 
 const VARIANT_OPTIONS = ['notice', 'warning', 'success', 'error'];
 
 function ToastPlayground() {
+  const { toasts, popToast, dismissToasts } = React.useContext(ToastContext);
   const [message, setMessage] = React.useState('');
   const [variant, setVariant] = React.useState(VARIANT_OPTIONS[0]);
-  const [toasts, setToasts] = React.useState([]);
 
   function handleVariantChange(event) {
     setVariant(event.target.value);
@@ -22,13 +23,13 @@ function ToastPlayground() {
 
   function handlePopToast(event) {
     event.preventDefault();
-    setToasts([...toasts, { id: crypto.randomUUID(), message, variant }]);
+    popToast({ message, variant });
     setMessage('')
     setVariant(VARIANT_OPTIONS[0]);
   }
 
   function handleDismissToast(id) {
-    setToasts(toasts.filter((toast) => toast.id !== id));
+    dismissToasts(id);
   }
 
   return (
