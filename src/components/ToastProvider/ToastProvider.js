@@ -1,23 +1,16 @@
 import React from 'react';
+import {useEscapeKey} from "../../hooks";
 
 export const ToastContext = React.createContext();
 
 function ToastProvider({ children}) {
   const [toasts, setToasts] = React.useState([]);
 
-  React.useEffect(() => {
-    const escapeListener = (event) => {
-      if (event.key === 'Escape') {
-        closeAllToasts();
-      }
-    }
+  const closeAllToasts = () => {
+    setToasts([]);
+  }
 
-    window.addEventListener('keydown', escapeListener);
-
-    return () => {
-      window.removeEventListener('keydown', escapeListener);
-    }
-  });
+  useEscapeKey(closeAllToasts);
 
   function handleDismissToast(id) {
     setToasts(toasts.filter((toast) => toast.id !== id));
@@ -25,10 +18,6 @@ function ToastProvider({ children}) {
 
   function popToast({ message, variant }) {
     setToasts([...toasts, { id: crypto.randomUUID(), message, variant }]);
-  }
-
-  const closeAllToasts = () => {
-    setToasts([]);
   }
 
   const value = React.useMemo(() => ({
